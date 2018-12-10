@@ -1,0 +1,79 @@
+.data
+Prompt: .asciiz     "\nEnter the number of disks: "
+Move: .asciiz      "\nMove disk from "
+To: .ascii      " to "
+.globl main
+.text  
+main:
+    li  $v0, 4
+    la  $a0, Prompt
+    syscall
+    li $v0, 5
+    syscall
+    add $a0, $v0, $zero
+    addi $a1, $zero, 1
+    addi $a2, $zero, 3
+    addi $a3, $zero, 2
+    jal hanoi_towers
+    li $v0, 10
+    syscall
+hanoi_towers:        
+    addi $t0, $a0, 0
+    addi $t1, $zero, 1
+    bne $a0, $t1, else
+    li $v0, 4	
+    la $a0, Move
+    syscall
+    li $v0, 1 	
+    move $a0, $a1
+    syscall
+    li $v0, 4	
+    la $a0, To
+    syscall
+    li $v0, 1 	
+    move $a0, $a2
+    syscall
+    addi $a0, $t0, 0
+    jr $ra
+else:
+    	addi $sp, $sp, -20
+    	sw $ra, 16($sp)
+    	sw $a3, 12($sp)		
+    	sw $a2, 8($sp)		
+    	sw $a1, 4($sp)		
+	sw $a0, 0($sp)		
+    		addi $t3, $a3, 0		
+    		addi $a3, $a2, 0		
+    		addi $a2, $t3, 0		
+    		addi $a0, $a0, -1			
+    		jal hanoi_towers   
+    	lw $ra, 16($sp)
+    	lw $a3, 12($sp)	
+    	lw $a2, 8($sp)		
+    	lw $a1, 4($sp)		
+    	lw $a0, 0($sp)		
+    	addi $t0, $a0, 0	
+    	addi $t1, $zero, 1
+    	li $v0, 4		
+    	la $a0, Move
+    	syscall
+    	li $v0, 1 		
+    	move $a0, $a1
+    	syscall
+    	li $v0, 4			
+    	la $a0, To
+    	syscall
+    	li $v0, 1 		
+    	move $a0, $a2
+    	syscall
+    	addi $a0, $t0, 0	
+    		addi $t3, $a3, 0		
+    		addi $a3, $a1, 0		
+    		addi $a1, $t3, 0		
+    		addi $a0, $a0, -1				
+
+    		jal hanoi_towers  
+    		lw $ra, 16($sp)
+    	addi $sp, $sp, 20
+    	add $v0, $zero, $t5
+    	jr $ra
