@@ -1,5 +1,5 @@
 .data
-Prompt: .asciiz     "\nEnter the number of disks: "
+Prompt: .asciiz     "\nTotal number of disks: "
 Move: .asciiz      "\nMove disk from "
 To: .ascii      " to "
 .globl main
